@@ -283,6 +283,15 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .s-card .igrp input:focus,.s-card .igrp select:focus{outline:none;border-color:var(--gold);}
 .s-card .igrp select option{background:var(--card);}
 .s-note{font-size:11px;color:var(--muted);letter-spacing:1px;line-height:1.6;}
+
+/* === GitHub Pages / mobile layout hotfix ===
+   ID selectors (#main, #log, #return...) were overriding .screen position.
+   Force every screen to occupy the viewport so bottom nav switches display correctly. */
+.screen{position:fixed !important; inset:0 !important;}
+.screen:not(.active){opacity:0 !important; pointer-events:none !important;}
+.screen.active{opacity:1 !important; pointer-events:all !important; z-index:10;}
+#nav{z-index:1000 !important;}
+
 </style>
 </head>
 <body>
@@ -1087,7 +1096,10 @@ function flushPendingSaves() {
 function show(id) {
   flushPendingSaves();  // 画面切り替え前に未保存分を即保存
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.classList.add('active');
+  target.scrollTop = 0;
   document.getElementById('nav').style.display = (id==='morning') ? 'none' : 'flex';
   // ナビのon状態を同期
   document.querySelectorAll('.nav-it').forEach(el => {
