@@ -1,11 +1,11 @@
 // DAIMON Service Worker
 // キャッシュ名にバージョンを入れる。更新時はここだけ変更する。
-const CACHE_VERSION = 'daimon-v1';
+const CACHE_VERSION = 'daimon-v8';
 const CACHE_FILES = [
-  '/daimon-v7b.html',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
 ];
 
 // ── インストール：リソースをキャッシュ ──────────────────────
@@ -52,7 +52,7 @@ self.addEventListener('fetch', event => {
         })
         .catch(() => {
           // オフライン時のフォールバック：メイン画面を返す
-          return caches.match('/daimon-v7b.html');
+          return caches.match('./index.html');
         });
     })
   );
